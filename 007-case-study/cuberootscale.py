@@ -4,6 +4,17 @@ import numpy as np
 from matplotlib import scale as mscale
 from matplotlib import transforms as mtransforms
 
+#------------------------------------------------------------------------------
+
+import matplotlib
+from packaging import version
+
+if version.parse(matplotlib.__version__) < version.parse('3.1.0') :
+    raise ValueError("cuberootscale requires matplotlib 3.1.0 or later.  "
+                     +f"Current version is {matplotlib.__version__}")
+
+#------------------------------------------------------------------------------
+
 class CubeRootScale(mscale.ScaleBase):
     """
     The scale function:
@@ -18,12 +29,14 @@ class CubeRootScale(mscale.ScaleBase):
     # be used to select this scale.
     name = 'cuberoot'
 
-    def __init__(self, axis, **kwargs):
+    def __init__(self, dummy_axis, **kwargs):
         """
         Any keyword arguments passed to ``set_xscale`` and ``set_yscale`` will
         be passed along to the scale's constructor.
+
+        Note:  The axis argument is unused by the superclass.
         """
-        super().__init__(axis)
+        super().__init__(dummy_axis)
 
     def get_transform(self):
         """
@@ -43,7 +56,7 @@ class CubeRootScale(mscale.ScaleBase):
         formatters is rather outside the scope of this example, but
         there are many helpful examples in ``ticker.py``.
         
-        Or see the MercatorLatitudeScale example on the web.
+        See the MercatorLatitudeScale example on the web.
         """
         pass
 
